@@ -179,6 +179,8 @@ components:
     UpdateProjectConfig:
       type: object
       properties:
+        desc:
+          type: string
         state:
           type: string
           enum: [failed, done, deploy]
