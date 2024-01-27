@@ -30,7 +30,7 @@ paths:
           description: bad request
         '500':
           description: internal server error
-  /v1/scada-data/project:
+  /v1/scada-data:
     post:
       tags: [scada-data]
       operationId: create-project
@@ -58,7 +58,7 @@ paths:
           description: unauthorized
         '500':
           description: internal server error
-  /v1/scada-data/{projectId}/upload:
+  /v1/scada-data/{ID}/upload:
     get:
       tags: [scada-data]
       operationId: upload-scada-data
@@ -67,7 +67,7 @@ paths:
         - bearerAuth: []
       parameters:
         - in: path
-          name: projectId
+          name: ID
           required: true
           schema:
             type: string
@@ -86,8 +86,8 @@ paths:
           description: not found
         '500':
           description: internal server error
-  /v1/scada-data/{projectId}/config/{version}:
-    put:
+  /v1/scada-data/{ID}/config/{VERSION}:
+    post:
       tags: [scada-data]
       operationId: upload-scada-data-done
       summary: 上傳檔案完畢，並告知是否deploy
@@ -95,12 +95,12 @@ paths:
         - bearerAuth: []
       parameters:
         - in: path
-          name: projectId
+          name: ID
           required: true
           schema:
             type: string
         - in: path
-          name: version
+          name: VERSION
           required: true
           schema:
             type: string
@@ -108,7 +108,7 @@ paths:
         content:
           application/json:
             schema:
-                $ref: '#/components/schemas/UpdateProjectConfig'
+                $ref: '#/components/schemas/CreateVersion'
       responses:
         '200':
           description: OK
@@ -120,16 +120,44 @@ paths:
           description: not found
         '500':
           description: internal server error
-  /v1/scada-data/{projectId}:
-    get:
+  /v1/scada-data/{ID}:
+    put:
       tags: [scada-data]
-      operationId: get-scada-data
-      summary: 取得對應project的scada config檔案列表
+      operationId: upload-scada-deploy-version
+      summary: 更新佈署版本(空白不更新)
       security:
         - bearerAuth: []
       parameters:
         - in: path
-          name: projectId
+          name: ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/UpdateDeployVersion'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: bad request
+        '401':
+          description: unauthorized
+        '404':
+          description: not found
+        '500':
+          description: internal server error
+    get:
+      tags: [scada-data]
+      operationId: get-scada-data
+      summary: 取得scada config檔案列表
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: ID
           required: true
           schema:
             type: string
@@ -165,25 +193,31 @@ components:
     UploadUrls:
       type: object
       properties:
+        key:
+          type: string
         version:
           type: string
-        frontend:
-          type: string
-        backend:
+        uploading:
           type: string
     CreateProject:
       type: object
       properties:
         name:
           type: string
-    UpdateProjectConfig:
+    CreateVersion:
       type: object
       properties:
+        key:
+          type: string
         desc:
           type: string
-        state:
+    UpdateDeployVersion:
+      type: object
+      properties:
+        frontend:
           type: string
-          enum: [failed, done, deploy]
+        backend:
+          type: string
     ScadaDataList:
       type: array
       items:
@@ -192,6 +226,9 @@ components:
           version:
             type: string
             description: timestamp
-          state:
+          frontend_used:
+            type: boolean
+          backend_used:
+            type: boolean
+          create_date:
             type: string
-            description: state
