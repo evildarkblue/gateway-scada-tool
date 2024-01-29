@@ -168,6 +168,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScadaDataList'
+        '204':
+          description: no content
         '400':
           description: bad request
         '401':
@@ -193,8 +195,6 @@ components:
     UploadUrls:
       type: object
       properties:
-        key:
-          type: string
         version:
           type: string
         uploading:
@@ -207,16 +207,12 @@ components:
     CreateVersion:
       type: object
       properties:
-        key:
-          type: string
         desc:
           type: string
     UpdateDeployVersion:
       type: object
       properties:
-        frontend:
-          type: string
-        backend:
+        version:
           type: string
     ScadaDataList:
       type: array
@@ -226,9 +222,9 @@ components:
           version:
             type: string
             description: timestamp
-          frontend_used:
+          is_used:
             type: boolean
-          backend_used:
-            type: boolean
+          desc:
+            type: string   
           create_date:
             type: string
