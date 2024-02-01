@@ -1,7 +1,7 @@
 VERSION=`git describe --tags`
 BUILD_TIME=`date +%FT%T%z`
 LDFLAGS=-ldflags "-X main.Version=$(V) -X main.BuildTime=${BUILD_TIME}"
-NAME=admin-gw
+NAME=gw-scada-tool
 
 run: gen-conf
 	krakend run -c krakend.json

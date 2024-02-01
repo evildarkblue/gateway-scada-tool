@@ -19,4 +19,4 @@ FROM devopsfaith/krakend:2.1.4
 COPY --from=minifier --chown=1000 /krakend/config/krakend.json .
 COPY --from=minifier --chown=1000 /krakend/config/doc/ ./doc/
 COPY --from=minifier --chown=1000 /krakend/config/plugin/ ./plugin/
-COPY --from=minifier --chown=1000 /krakend/config/script/ ./script/
+# COPY --from=minifier --chown=1000 /krakend/config/script/ ./script/
