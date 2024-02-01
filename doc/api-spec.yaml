@@ -22,10 +22,9 @@ paths:
         '200':
           description: OK
           content:
-            text/plain:
-              schema: 
-                type: string
-                example: token
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
         '400':
           description: bad request
         '500':
@@ -192,6 +191,22 @@ components:
           type: string
         pwd:
           type: string
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        state:
+          type: string
+        platform:
+          type: object
+          properties:
+            name:
+              type: string
+            roles:
+              type: array
+              items:
+                type: string
     UploadUrls:
       type: object
       properties:
