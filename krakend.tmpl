@@ -53,8 +53,7 @@
     "output_encoding": "no-op",
     "extra_config": {
       {{ include "rate_limit_endpoint.tmpl" }}{{if $endpoint.modifier_lua_proxy}},
-      "modifier/lua-proxy":{{ marshal $endpoint.modifier_lua_proxy }}{{end}}{{if $endpoint.modifier_martian}},
-      "modifier/martian":{{ marshal $endpoint.modifier_martian }}{{end}}
+      "modifier/lua-proxy":{{ marshal $endpoint.modifier_lua_proxy }}{{end}}
     },
     "backend": [
       {
@@ -62,6 +61,10 @@
         "method": "{{ $endpoint.method }}",
         "encoding": "no-op",
         "host": {{ marshal $endpoint.host }}
+        {{if $endpoint.modifier_martian}},
+        "extra_config": {
+        "modifier/martian":{{ marshal $endpoint.modifier_martian }}
+        }{{end}}
       }
     ]}{{ end }}
 	]
