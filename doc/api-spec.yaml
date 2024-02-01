@@ -190,7 +190,7 @@ components:
       properties:
         account:
           type: string
-        password:
+        pwd:
           type: string
     UploadUrls:
       type: object

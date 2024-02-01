@@ -1,0 +1,53 @@
+{
+    "group": [
+        {
+            "description": "登入",
+            "endpoint": "/v1/login",
+            "method": "POST",
+            "backend": "/v5/login",
+			"host": ["http://auth-svc:9080"],
+            "modifier_martian": {
+                "header.Modifier": {
+                  "scope": ["request"],
+                  "name": "X-PLATFORM",
+                  "value": "scada-tool"
+                }
+            }
+        },
+        {
+            "description": "建立scada-data設定集",
+            "endpoint": "/v1/scada-data",
+            "method": "POST",
+            "backend": "/v1/scada-data",
+			"host": ["http://configuration-svc:9080"]
+        },
+        {
+            "description": "取得scada-data設定集版本清單",
+            "endpoint": "/v1/scada-data/{ID}",
+            "method": "GET",
+            "backend": "/v1/scada-data/{ID}",
+			"host": ["http://configuration-svc:9080"]
+        },
+        {
+            "description": "設定scada-data設定集現行版本",
+            "endpoint": "/v1/scada-data/{ID}",
+            "method": "PUT",
+            "backend": "/v1/scada-data/{ID}",
+			"host": ["http://configuration-svc:9080"]
+        },
+        {
+            "description": "取得scada-data新版本上傳位置",
+            "endpoint": "/v1/scada-data/{ID}/upload",
+            "method": "GET",
+            "backend": "/v1/scada-data/{ID}/signed-url",
+			"host": ["http://configuration-svc:9080"]
+        },
+        {
+            "description": "新增scada-data版本",
+            "endpoint": "/v1/scada-data/{ID}/config/{version}",
+            "method": "POST",
+            "backend": "/v1/scada-data/{ID}/config/{version}",
+			"host": ["http://configuration-svc:9080"]
+        }
+    ]
+}
