@@ -4,7 +4,8 @@
             "description": "登入",
             "endpoint": "/v1/login",
             "method": "POST",
-            "backend": "/v5/login",
+            "orgin_backend": "/v5/login",
+            "backend": "/temp/login",
 			"host": ["http://auth-svc:9080"],
             "modifier_martian": {
                 "header.Modifier": {
