@@ -55,6 +55,8 @@ paths:
           description: bad request
         '401':
           description: unauthorized
+        '409':
+          description: project name duplication
         '500':
           description: internal server error
   /v1/scada-data/{ID}/upload:
