@@ -38,3 +38,8 @@
 ### settings
 * endpoint.json
 > 設定服務Api路由清單
+
+## API文件
+
+[swagger](https://storage.googleapis.com/pub.storage.muulin-tech.com/swagger/index.html?file=https://raw.githubusercontent.com/muulinCorp/gw-scada-tool/main/doc/api-spec.yaml)
+
