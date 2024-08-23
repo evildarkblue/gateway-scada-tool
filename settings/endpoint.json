@@ -1,54 +1,94 @@
 {
-    "group": [
-        {
-            "description": "登入",
-            "endpoint": "/v1/login",
-            "method": "POST",
-            "orgin_backend": "/v5/login",
-            "backend": "/temp/login",
-			"host": ["http://auth-svc:9080"],
-            "modifier_martian": {
-                "header.Modifier": {
-                  "scope": ["request"],
-                  "name": "X-PLATFORM",
-                  "value": "scada-tool"
-                }
-            }
-        },
-        {
-            "description": "建立scada-data設定集",
-            "endpoint": "/v1/scada-data",
-            "method": "POST",
-            "backend": "/v1/scada-data",
-			"host": ["http://configuration-svc:9080"]
-        },
-        {
-            "description": "取得scada-data設定集版本清單",
-            "endpoint": "/v1/scada-data/{ID}",
-            "method": "GET",
-            "backend": "/v1/scada-data/{ID}",
-			"host": ["http://configuration-svc:9080"]
-        },
-        {
-            "description": "設定scada-data設定集現行版本",
-            "endpoint": "/v1/scada-data/{ID}",
-            "method": "PUT",
-            "backend": "/v1/scada-data/{ID}",
-			"host": ["http://configuration-svc:9080"]
-        },
-        {
-            "description": "取得scada-data新版本上傳位置",
-            "endpoint": "/v1/scada-data/{ID}/upload",
-            "method": "GET",
-            "backend": "/v1/scada-data/{ID}/signed-url",
-			"host": ["http://configuration-svc:9080"]
-        },
-        {
-            "description": "新增scada-data版本",
-            "endpoint": "/v1/scada-data/{ID}/config/{version}",
-            "method": "POST",
-            "backend": "/v1/scada-data/{ID}/config/{version}",
-			"host": ["http://configuration-svc:9080"]
+  "group": [
+    {
+      "description": "完成新增案場設定檔版本",
+      "endpoint": "/scada-tool/scada-data/{id}/config/done",
+      "method": "POST",
+      "backend": "/v1/scada-data/{id}/config/done",
+      "host": [
+        "http://configuration:9080"
+      ]
+    },
+    {
+      "description": "開始新增案場設定檔版本",
+      "endpoint": "/scada-tool/scada-data/{id}/config/start",
+      "method": "POST",
+      "backend": "/v1/scada-data/{id}/config/start",
+      "host": [
+        "http://configuration:9080"
+      ]
+    },
+    {
+      "description": "更新案場預設設定檔",
+      "endpoint": "/scada-tool/scada-data/{id}/default",
+      "method": "PUT",
+      "backend": "/v1/scada-data/{id}/default",
+      "host": [
+        "http://configuration:9080"
+      ]
+    },
+    {
+      "description": "刪除版本",
+      "endpoint": "/scada-tool/scada-data/{id}/version/{version}",
+      "method": "DELETE",
+      "backend": "/v1/scada-data/{id}/version/{version}",
+      "host": [
+        "http://configuration:9080"
+      ]
+    },
+    {
+      "description": "登入取得 uToken",
+      "endpoint": "/scada-tool/login",
+      "method": "POST",
+      "backend": "/v5/login",
+      "host": [
+        "http://auth:9080"
+      ],
+      "modifier_martian": {
+        "header.Append": {
+            "scope": [
+              "request"
+            ],
+            "name": "X-PLATFORM",
+            "value": "scada-tool"
         }
-    ]
+      }
+    },
+    {
+      "description": "取得scada-data列表",
+      "endpoint": "/scada-tool/scada-data",
+      "method": "GET",
+      "backend": "/v1/scada-data",
+      "host": [
+        "http://configuration:9080"
+      ]
+    },
+    {
+      "description": "新增設定檔",
+      "endpoint": "/scada-tool/scada-data",
+      "method": "POST",
+      "backend": "/v1/scada-data",
+      "host": [
+        "http://configuration:9080"
+      ]
+    },
+    {
+      "description": "刪除Scada設定檔",
+      "endpoint": "/scada-tool/scada-data/{id}",
+      "method": "DELETE",
+      "backend": "/v1/scada-data/{id}",
+      "host": [
+        "http://configuration:9080"
+      ]
+    },
+    {
+      "description": "取得案場設定檔列表",
+      "endpoint": "/scada-tool/scada-data/{id}",
+      "method": "GET",
+      "backend": "/v1/scada-data/{id}",
+      "host": [
+        "http://configuration:9080"
+      ]
+    }
+  ]
 }

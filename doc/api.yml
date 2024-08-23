@@ -1,0 +1,968 @@
+openapi: 3.1.0
+info:
+  title: Scada Tool API
+  description: Scada Tool API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.3
+servers:
+- url: https://mock.apidog.com/m1/606880-573224-default
+  description: Mock API
+tags:
+- name: auth
+- name: configuration
+paths:
+  /scada-tool/login:
+    post:
+      tags:
+      - auth
+      summary: 登入取得 uToken(對應 POST /v5/login)
+      operationId: login
+      parameters:
+      - name: X-PLATFORM
+        in: header
+        schema:
+          type: string
+          enum:
+          - scada-tool
+          - admin
+        example: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+            example: ""
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudLoginResponse'
+              examples:
+                "1":
+                  summary: Success
+                  value:
+                    channels:
+                    - id: this is admin id
+                      name: 管理後台
+                      roles:
+                      - owner
+                    - id: this is app id
+                      name: 沐霖行動服務
+                      roles:
+                      - owner
+                      - editor
+                    name: this is username
+                    state: good
+                    utoken: this is token
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+        "500":
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsResponse'
+      security:
+      - bearerAuth: []
+      externalDocs:
+        description: Auth Service
+        url: http://auth:9080
+  /scada-tool/scada-data:
+    get:
+      tags:
+      - configuration
+      summary: 取得scada-data列表(對應 GET /v1/scada-data)
+      operationId: get-scada-data-list
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - id
+                - name
+                - count_version
+                - current_version
+                properties:
+                  count_version:
+                    type: integer
+                  current_version:
+                    type: string
+                  id:
+                    type: string
+                  name:
+                    type: string
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+        "401":
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                - server
+                - error
+                properties:
+                  error:
+                    type: string
+                  server:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+        "500":
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+      security:
+      - bearerAuth: []
+      externalDocs:
+        description: Configuration Server
+        url: http://configuration:9080
+    post:
+      tags:
+      - configuration
+      summary: 新增設定檔(對應 POST /scada-tool/scada-data)
+      description: 新增SCADA案場相關設定檔資料
+      operationId: create-scada-data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+            example: ""
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - id
+                - token
+                - 01J5Z3EP2V606FWA3RC9RMFAEG
+                properties:
+                  id:
+                    type: string
+                  token:
+                    type: string
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+        "401":
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                - server
+                - error
+                properties:
+                  error:
+                    type: string
+                  server:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+        "500":
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+      security:
+      - bearerAuth: []
+      externalDocs:
+        description: Configuration Server
+        url: http://configuration:9080
+  /scada-tool/scada-data/{id}:
+    delete:
+      tags:
+      - configuration
+      summary: 刪除Scada設定檔(對應 DELETE /v1/scada-data/{id})
+      operationId: delete-scada-data
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: ""
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Invalid Id
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                - service
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+        "401":
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                - server
+                - error
+                properties:
+                  error:
+                    type: string
+                  server:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+        "500":
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+      security:
+      - bearerAuth: []
+      externalDocs:
+        description: Configuration Server
+        url: http://configuration:9080
+    get:
+      tags:
+      - configuration
+      summary: 取得案場設定檔列表(對應 GET /scada-tool/scada-data/{id})
+      description: 取得案場設定檔列表
+      operationId: get-scada-data-versions
+      parameters:
+      - name: id
+        in: path
+        description: 案場ID
+        required: true
+        schema:
+          type: string
+        example: ""
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - name
+                - token
+                - versions
+                properties:
+                  name:
+                    type: string
+                    description: name
+                  token:
+                    type: string
+                  versions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScadaDataItem'
+        "204":
+          description: No Content
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                - server
+                - error
+                properties:
+                  error:
+                    type: string
+                  server:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+        "500":
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+      security:
+      - bearerAuth: []
+      externalDocs:
+        description: Configuration Server
+        url: http://configuration:9080
+  /scada-tool/scada-data/{id}/config/done:
+    post:
+      tags:
+      - configuration
+      summary: 完成新增案場設定檔版本(對應 POST /v1/scada-data/{id}/config/done)
+      description: 新增案場設定檔版本
+      operationId: create-scada-data-config-done
+      parameters:
+      - name: id
+        in: path
+        description: 案場ID
+        required: true
+        schema:
+          type: string
+        example: ""
+      - name: X-SESSION-ID
+        in: header
+        schema:
+          type: string
+        example: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - set_default
+              properties:
+                set_default:
+                  type: boolean
+            example: ""
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - version
+                properties:
+                  version:
+                    type: string
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+        "401":
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                - server
+                - error
+                properties:
+                  error:
+                    type: string
+                  server:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+        "500":
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+      security:
+      - bearerAuth: []
+      externalDocs:
+        description: Configuration Server
+        url: http://configuration:9080
+  /scada-tool/scada-data/{id}/config/start:
+    post:
+      tags:
+      - configuration
+      summary: 開始新增案場設定檔版本(對應 POST /v1/scada-data/{id}/config/start)
+      description: 新增案場設定檔版本
+      operationId: create-scada-data-config-start
+      parameters:
+      - name: id
+        in: path
+        description: 案場ID
+        required: true
+        schema:
+          type: string
+        example: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - desc
+              properties:
+                desc:
+                  type: string
+            example: ""
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - upload_url
+                properties:
+                  upload_url:
+                    type: string
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+        "401":
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                - server
+                - error
+                properties:
+                  error:
+                    type: string
+                  server:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+        "406":
+          description: Version Number Is Over Ten
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+        "500":
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+      security:
+      - bearerAuth: []
+      externalDocs:
+        description: Configuration Server
+        url: http://configuration:9080
+  /scada-tool/scada-data/{id}/default:
+    put:
+      tags:
+      - configuration
+      summary: 更新案場預設設定檔(對應 PUT /v1/scada-data/{id}/default)
+      description: 更新案場設定檔
+      operationId: update-scada-data
+      parameters:
+      - name: id
+        in: path
+        description: 案場ID
+        required: true
+        schema:
+          type: string
+        example: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - version
+              properties:
+                version:
+                  type: string
+            example: ""
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+        "401":
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                - server
+                - error
+                properties:
+                  error:
+                    type: string
+                  server:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+        "500":
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+      security:
+      - bearerAuth: []
+      externalDocs:
+        description: Configuration Server
+        url: http://configuration:9080
+  /scada-tool/scada-data/{id}/version/{version}:
+    delete:
+      tags:
+      - configuration
+      summary: 刪除版本(對應 DELETE /v1/scada-data/{id}/version/{version})
+      operationId: delete-scada-data-version
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                - server
+                - error
+                properties:
+                  error:
+                    type: string
+                  server:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+        "406":
+          description: Can Not Delete
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - service
+                - status
+                - error
+                properties:
+                  error:
+                    type: string
+                  service:
+                    type: string
+                  status:
+                    type: integer
+      security:
+      - bearerAuth: []
+      externalDocs:
+        description: Configuration Server
+        url: http://configuration:9080
+components:
+  schemas:
+    CloudLoginResponse:
+      type: object
+      required:
+      - token
+      - name
+      - state
+      - channels
+      - refresh_token
+      properties:
+        channels:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        refresh_token:
+          type: string
+        state:
+          type: string
+          enum:
+          - good
+          - changePwd
+          - verifyMail
+        token:
+          type: string
+    ErrorsResponse:
+      type: object
+      required:
+      - error
+      - status
+      - service
+      properties:
+        error:
+          type: string
+        service:
+          type: string
+        status:
+          type: integer
+          format: int32
+    Login:
+      type: object
+      required:
+      - account
+      - pwd
+      properties:
+        account:
+          type: string
+        push:
+          type: string
+        pwd:
+          type: string
+    ScadaDataItem:
+      type: object
+      required:
+      - version
+      - desc
+      - is_used
+      - updated
+      properties:
+        desc:
+          type: string
+        is_used:
+          type: boolean
+        updated:
+          type: string
+        version:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

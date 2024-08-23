@@ -1,0 +1,20 @@
+openapi: 3.1.0
+info:
+  version: "1.0.3"
+  title: "Scada Tool API"
+  description: "Scada Tool API"
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+
+servers:
+  - url: https://mock.apidog.com/m1/606880-573224-default
+    description: Mock API
+
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -47,7 +47,8 @@
     "input_headers": [
         "User-Agent",
         "Authorization",
-        "Content-Type"
+        "Content-Type",
+        "X-SESSION-ID"
     ],
     {{if $endpoint.input_querys}}"input_query_strings": {{ marshal $endpoint.input_querys }},{{end}}
     "output_encoding": "no-op",

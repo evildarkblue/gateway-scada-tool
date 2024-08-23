@@ -1,0 +1,872 @@
+servers:
+- url: 'http://configuration:9080'
+  description: Configuration Server
+openapi: 3.1.0
+info:
+  title: configuration
+  description: ''
+  version: 1.0.0
+tags:
+  - name: configuration
+paths:
+  /v1/scada-data:
+    post:
+      summary: 新增設定檔
+      deprecated: false
+      description: 新增SCADA案場相關設定檔資料
+      operationId: create-scada-data
+      tags:
+        - configuration
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+            example: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  token:
+                    type: string
+                required:
+                  - id
+                  - token
+                  - 01J5Z3EP2V606FWA3RC9RMFAEG
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+        '401':
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status
+                  server:
+                    type: string
+                  error:
+                    type: string
+                required:
+                  - status
+                  - server
+                  - error
+        '500':
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+      security:
+        - bearer: []
+    get:
+      summary: 取得scada-data列表
+      deprecated: false
+      description: ''
+      operationId: get-scada-data-list
+      tags:
+        - configuration
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  count_version:
+                    type: integer
+                  current_version:
+                    type: string
+                required:
+                  - id
+                  - name
+                  - count_version
+                  - current_version
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+        '401':
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status
+                  server:
+                    type: string
+                  error:
+                    type: string
+                required:
+                  - status
+                  - server
+                  - error
+        '500':
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+      security:
+        - bearer: []
+  /v1/scada-data/{id}:
+    get:
+      summary: 取得案場設定檔列表
+      deprecated: false
+      description: 取得案場設定檔列表
+      operationId: get-scada-data-versions
+      tags:
+        - configuration
+      parameters:
+        - name: id
+          in: path
+          description: 案場ID
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: name
+                  token:
+                    type: string
+                  versions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScadaDataItem'
+                required:
+                  - name
+                  - token
+                  - versions
+        '204':
+          description: No Content
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '401':
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status
+                  server:
+                    type: string
+                  error:
+                    type: string
+                required:
+                  - status
+                  - server
+                  - error
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+        '500':
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+      security:
+        - bearer: []
+    delete:
+      summary: 刪除Scada設定檔
+      deprecated: false
+      description: ''
+      operationId: delete-scada-data
+      tags:
+        - configuration
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '400':
+          description: Invalid Id
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  status:
+                    type: integer
+                  service:
+                    type: string
+                  error:
+                    type: string
+                required:
+                  - status
+                  - service
+                  - error
+        '401':
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status
+                  server:
+                    type: string
+                  error:
+                    type: string
+                required:
+                  - status
+                  - server
+                  - error
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+        '500':
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+      security:
+        - bearer: []
+  /v1/scada-data/{id}/default:
+    put:
+      summary: 更新案場預設設定檔
+      deprecated: false
+      description: 更新案場設定檔
+      operationId: update-scada-data
+      tags:
+        - configuration
+      parameters:
+        - name: id
+          in: path
+          description: 案場ID
+          required: true
+          example: ''
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                version:
+                  type: string
+              required:
+                - version
+            example: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+        '401':
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status
+                  server:
+                    type: string
+                  error:
+                    type: string
+                required:
+                  - status
+                  - server
+                  - error
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+        '500':
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+      security:
+        - bearer: []
+  /v1/scada-data/{id}/config/start:
+    post:
+      summary: 開始新增案場設定檔版本
+      deprecated: false
+      description: 新增案場設定檔版本
+      operationId: create-scada-data-config-start
+      tags:
+        - configuration
+      parameters:
+        - name: id
+          in: path
+          description: 案場ID
+          required: true
+          example: ''
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                desc:
+                  type: string
+              required:
+                - desc
+            example: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  upload_url:
+                    type: string
+                required:
+                  - upload_url
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+        '401':
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status
+                  server:
+                    type: string
+                  error:
+                    type: string
+                required:
+                  - status
+                  - server
+                  - error
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+        '406':
+          description: Version Number Is Over Ten
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+        '500':
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+      security:
+        - bearer: []
+  /v1/scada-data/{id}/config/done:
+    post:
+      summary: 完成新增案場設定檔版本
+      deprecated: false
+      description: 新增案場設定檔版本
+      operationId: create-scada-data-config-done
+      tags:
+        - configuration
+      parameters:
+        - name: id
+          in: path
+          description: 案場ID
+          required: true
+          example: ''
+          schema:
+            type: string
+        - name: X-SESSION-ID
+          in: header
+          description: ''
+          required: false
+          example: ''
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                set_default:
+                  type: boolean
+              required:
+                - set_default
+            example: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                required:
+                  - version
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                    description: status
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+        '401':
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status
+                  server:
+                    type: string
+                  error:
+                    type: string
+                required:
+                  - status
+                  - server
+                  - error
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+        '500':
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+      security:
+        - bearer: []
+  /v1/scada-data/{id}/version/{version}:
+    delete:
+      summary: 刪除版本
+      deprecated: false
+      description: ''
+      operationId: delete-scada-data-version
+      tags:
+        - configuration
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+        - name: version
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '401':
+          description: Unauthorization
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status
+                  server:
+                    type: string
+                  error:
+                    type: string
+                required:
+                  - status
+                  - server
+                  - error
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+        '406':
+          description: Can Not Delete
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '500':
+          description: Internal Service Error
+          content:
+            application/json:
+              schema:
+                title: ''
+                type: object
+                properties:
+                  service:
+                    type: string
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                required:
+                  - service
+                  - status
+                  - error
+      security:
+        - bearer: []
+components:
+  schemas:
+    ScadaDataItem:
+      type: object
+      required:
+        - version
+        - desc
+        - is_used
+        - updated
+      properties:
+        desc:
+          type: string
+        is_used:
+          type: boolean
+        updated:
+          type: string
+        version:
+          type: string
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer

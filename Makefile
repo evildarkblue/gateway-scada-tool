@@ -20,6 +20,26 @@ gen-conf:
 	-e FC_ENABLE=1 -e FC_PARTIALS="./partials" \
 	-e FC_SETTINGS="./settings" -e FC_OUT=krakend_pretty.json \
 	-v $$PWD:/etc/krakend/ devopsfaith/krakend:2.1.4 check -d -t -c ./krakend.tmpl
-	docker run -i stedolan/jq --compact-output <krakend_pretty.json '.' > krakend.json
+	docker run -i isaackuang/tools jq --compact-output <krakend_pretty.json '.' > krakend.json
 
 
+merge-spec:
+	docker run -it \
+	-v $$PWD:/workdir 94peter/openapi-cli:v1.5 /main ms \
+	-main /workdir/main_spec.yml \
+	-mergeDir /workdir/allspec/ \
+	-output /workdir/doc/api.yml \
+	-version-replace scada-tool
+
+gen-setting-json:
+	docker run -it \
+	-v $$PWD:/workdir 94peter/openapi-cli:v1.5 /main ms \
+	-main /workdir/main_spec.yml \
+	-mergeDir /workdir/allspec/ \
+	-output /workdir/doc/temp_api.yml
+	docker run -it \
+	-v $$PWD:/workdir 94peter/openapi-cli:v1.5 /main togs \
+	-spec /workdir/doc/temp_api.yml \
+	-output /workdir/settings/endpoint.json \
+	-version-replace scada-tool
+	rm ./doc/temp_api.yml

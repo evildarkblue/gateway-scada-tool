@@ -1,0 +1,67 @@
+{
+  "group": [
+    {
+      "description": "取得案場設定檔列表",
+      "endpoint": "/scada-tool/scada-data/{id}/versions",
+      "method": "GET",
+      "backend": "/v1/scada-data/{id}/versions",
+      "host": [
+        "http://configuration:9080"
+      ]
+    },
+    {
+      "description": "登入取得 uToken",
+      "endpoint": "/scada-tool/login",
+      "method": "POST",
+      "backend": "/v5/login",
+      "host": [
+        "http://auth:9080"
+      ],
+      "modifier_martian": {
+        "header.Append": {
+            "scope": [
+              "request"
+            ],
+            "name": "X-PLATFORM",
+            "value": "scada-tool"
+        }
+      }
+    },
+    {
+      "description": "新增設定檔",
+      "endpoint": "/scada-tool/scada-data",
+      "method": "POST",
+      "backend": "/v1/scada-data",
+      "host": [
+        "http://configuration:9080"
+      ]
+    },
+    {
+      "description": "完成新增案場設定檔版本",
+      "endpoint": "/scada-tool/scada-data/{id}/config/done",
+      "method": "POST",
+      "backend": "/v1/scada-data/{id}/config/done",
+      "host": [
+        "http://configuration:9080"
+      ]
+    },
+    {
+      "description": "開始新增案場設定檔版本",
+      "endpoint": "/scada-tool/scada-data/{id}/config/start",
+      "method": "POST",
+      "backend": "/v1/scada-data/{id}/config/start",
+      "host": [
+        "http://configuration:9080"
+      ]
+    },
+    {
+      "description": "更新案場預設設定檔",
+      "endpoint": "/scada-tool/scada-data/{id}/default",
+      "method": "PUT",
+      "backend": "/v1/scada-data/{id}/default",
+      "host": [
+        "http://configuration:9080"
+      ]
+    }
+  ]
+}
