@@ -1,39 +1,12 @@
 {
   "group": [
     {
-      "description": "完成新增案場設定檔版本",
-      "endpoint": "/scada-tool/scada-data/{id}/config/done",
-      "method": "POST",
-      "backend": "/v1/scada-data/{id}/config/done",
-      "host": [
-        "http://configuration:9080"
-      ]
-    },
-    {
-      "description": "開始新增案場設定檔版本",
-      "endpoint": "/scada-tool/scada-data/{id}/config/start",
-      "method": "POST",
-      "backend": "/v1/scada-data/{id}/config/start",
-      "host": [
-        "http://configuration:9080"
-      ]
-    },
-    {
-      "description": "更新案場預設設定檔",
-      "endpoint": "/scada-tool/scada-data/{id}/default",
-      "method": "PUT",
-      "backend": "/v1/scada-data/{id}/default",
-      "host": [
-        "http://configuration:9080"
-      ]
-    },
-    {
       "description": "刪除版本",
       "endpoint": "/scada-tool/scada-data/{id}/version/{version}",
       "method": "DELETE",
       "backend": "/v1/scada-data/{id}/version/{version}",
       "host": [
-        "http://configuration:9080"
+        "http://configuration-svc:9080"
       ]
     },
     {
@@ -42,7 +15,7 @@
       "method": "POST",
       "backend": "/v5/login",
       "host": [
-        "http://auth:9080"
+        "http://auth-svc:9080"
       ],
       "modifier_martian": {
         "header.Append": {
@@ -55,21 +28,21 @@
       }
     },
     {
-      "description": "取得scada-data列表",
-      "endpoint": "/scada-tool/scada-data",
-      "method": "GET",
-      "backend": "/v1/scada-data",
-      "host": [
-        "http://configuration:9080"
-      ]
-    },
-    {
       "description": "新增設定檔",
       "endpoint": "/scada-tool/scada-data",
       "method": "POST",
       "backend": "/v1/scada-data",
       "host": [
-        "http://configuration:9080"
+        "http://configuration-svc:9080"
+      ]
+    },
+    {
+      "description": "取得scada-data列表",
+      "endpoint": "/scada-tool/scada-data",
+      "method": "GET",
+      "backend": "/v1/scada-data",
+      "host": [
+        "http://configuration-svc:9080"
       ]
     },
     {
@@ -78,7 +51,7 @@
       "method": "DELETE",
       "backend": "/v1/scada-data/{id}",
       "host": [
-        "http://configuration:9080"
+        "http://configuration-svc:9080"
       ]
     },
     {
@@ -87,7 +60,34 @@
       "method": "GET",
       "backend": "/v1/scada-data/{id}",
       "host": [
-        "http://configuration:9080"
+        "http://configuration-svc:9080"
+      ]
+    },
+    {
+      "description": "完成新增案場設定檔版本",
+      "endpoint": "/scada-tool/scada-data/{id}/config/done",
+      "method": "POST",
+      "backend": "/v1/scada-data/{id}/config/done",
+      "host": [
+        "http://configuration-svc:9080"
+      ]
+    },
+    {
+      "description": "開始新增案場設定檔版本",
+      "endpoint": "/scada-tool/scada-data/{id}/config/start",
+      "method": "POST",
+      "backend": "/v1/scada-data/{id}/config/start",
+      "host": [
+        "http://configuration-svc:9080"
+      ]
+    },
+    {
+      "description": "更新案場預設設定檔",
+      "endpoint": "/scada-tool/scada-data/{id}/default",
+      "method": "PUT",
+      "backend": "/v1/scada-data/{id}/default",
+      "host": [
+        "http://configuration-svc:9080"
       ]
     }
   ]

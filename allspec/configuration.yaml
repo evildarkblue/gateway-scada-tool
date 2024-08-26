@@ -1,5 +1,5 @@
 servers:
-- url: 'http://configuration:9080'
+- url: 'http://configuration-svc:9080'
   description: Configuration Server
 openapi: 3.1.0
 info:
